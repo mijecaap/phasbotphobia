@@ -28,9 +28,16 @@ async function registerCommands() {
   try {
     const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
     
-    console.log('Registrando slash commands globales...');
+    // Primero, borrar todos los comandos existentes
+    console.log('Borrando todos los comandos existentes...');
+    await rest.put(
+      Routes.applicationCommands(process.env.CLIENT_ID),
+      { body: [] }
+    );
+    console.log('Comandos anteriores eliminados.');
     
-    // Registrar comandos globales (disponibles en todos los servidores)
+    // Ahora registrar solo el comando actual
+    console.log('Registrando slash commands globales...');
     await rest.put(
       Routes.applicationCommands(process.env.CLIENT_ID),
       { body: commands }
